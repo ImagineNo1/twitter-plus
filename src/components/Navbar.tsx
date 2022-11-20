@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <div className="grid grid-cols-home h-14 items-center mb-4 p-2 gap-2">
+    <div className="grid grid-cols-home h-14 items-center mb-4 p-2 gap-10">
       <div className="text-4xl font-thin">Twitter+</div>
       <div className="font-bold text-2xl">Home</div>
       <div>

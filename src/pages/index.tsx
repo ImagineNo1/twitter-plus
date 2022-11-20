@@ -1,10 +1,15 @@
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import LeftTemplate from "../components/left-sidebar/template";
-import MainTemplate from "../components/main-content/Template";
+import LeftTemplate from "../components/LeftSideBar";
+import MainTemplate from "../components/MainSideBar";
 import Navbar from "../components/Navbar";
-import RightTemplate from "../components/right-sidebar/Template";
+import RightTemplate from "../components/RightSideBar";
+import { tweetsType } from "../types/types";
+import { PrismaClient } from "@prisma/client";
 
-export default function Home() {
+export default function Home({
+  tweets,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <Head>
@@ -12,12 +17,24 @@ export default function Home() {
       </Head>
       <div className="w-80 mx-auto">
         <Navbar />
-        <div className="grid grid-cols-home gap-2">
+        <div className="grid grid-cols-home gap-10">
           <LeftTemplate />
-          <MainTemplate />
+          <MainTemplate tweets={tweets} />
           <RightTemplate />
         </div>
       </div>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<{
+  tweets: tweetsType[];
+}> = async () => {
+  const Prisma = new PrismaClient();
+  const tweets = await Prisma.tweet.findMany();
+  return {
+    props: {
+      tweets,
+    },
+  };
+};
